@@ -2,286 +2,390 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>n8n LEO - Monitoring</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;padding:20px}
-.container{max-width:1200px;margin:0 auto}
-h1{font-size:24px;margin-bottom:5px;color:#58a6ff}
-h2{font-size:18px;margin:25px 0 15px;color:#f0f6fc}
-.subtitle{color:#8b949e;margin-bottom:20px;font-size:14px}
-.nav-links{margin-bottom:20px}
-.nav-links a{color:#58a6ff;text-decoration:none;margin-right:15px;font-size:13px}
-.nav-links a:hover{text-decoration:underline}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:25px}
-.stat-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;text-align:center}
-.stat-card .value{font-size:32px;font-weight:700;color:#f0f6fc}
-.stat-card .label{font-size:12px;color:#8b949e;margin-top:4px}
-.stat-card .icon{font-size:20px}
-.cron-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px}
-.cron-card.active{border-left:3px solid #3fb950}
-.cron-card.inactive{border-left:3px solid #484f58;opacity:0.7}
-.cron-status{font-size:18px;min-width:28px;text-align:center}
-.cron-info{flex:1}
-.cron-info strong{font-size:15px;color:#f0f6fc}
-.cron-meta{font-size:12px;color:#8b949e;margin-top:4px;line-height:1.6}
-.cron-stats{margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}
-.badge{font-size:11px;padding:2px 8px;border-radius:10px}
-.badge.success{background:rgba(63,185,80,0.15);color:#3fb950}
-.badge.error{background:rgba(248,81,73,0.15);color:#f85149}
-.badge.info{background:rgba(88,166,255,0.15);color:#58a6ff}
-.chart-container{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin-bottom:20px}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{padding:8px 10px;text-align:left;border-bottom:1px solid #21262d}
-th{color:#8b949e;font-weight:600;position:sticky;top:0;background:#0d1117}
-.td-ok{color:#3fb950}
-.td-error{color:#f85149}
-.td-na{color:#484f58}
-.footer{margin-top:30px;padding-top:15px;border-top:1px solid #21262d;font-size:12px;color:#484f58;text-align:center}
-.grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:768px){.stats-grid{grid-template-columns:repeat(2,1fr)}.grid-2col{grid-template-columns:1fr}}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;padding:20px;max-width:1400px;margin:0 auto}
+h1{font-size:1.5rem;margin-bottom:4px;color:#f1f5f9}
+h2{font-size:1rem;color:#94a3b8;margin-bottom:12px;font-weight:500}
+.header{display:flex;justify-content:space-between;margin-bottom:16px;align-items:center}
+.header small{color:#64748b}
+.nav-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.nav-link{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:8px 14px;text-decoration:none;color:#cbd5e1;font-size:12px;font-weight:600;transition:.15s}
+.nav-link:hover{border-color:#a78bfa;background:#2e1065;color:#c4b5fd;transform:translateY(-1px)}
+.nav-link.active{background:#2e1065;border-color:#a78bfa}
+.stats{display:flex;gap:12px;margin-bottom:16px}
+.stat{background:#1e293b;padding:12px 20px;border-radius:10px;text-align:center;flex:1}
+.stat .num{font-size:1.8rem;font-weight:700}
+.stat .label{font-size:.75rem;color:#94a3b8;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;margin-bottom:20px}
+.card{background:#1e293b;border-radius:12px;padding:14px;border-left:4px solid #334155;margin-bottom:0}
+.card.ok{border-left-color:#22c55e}
+.card.paused{border-left-color:#64748b;opacity:.7}
+.card-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.card-icon{font-size:1.4rem}
+.card-title strong{font-size:0.95rem}
+.card-title small{display:block;font-size:.7rem;color:#64748b}
+.info{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:.8rem;color:#94a3b8}
+.info span:nth-child(even){color:#e2e8f0;text-align:right;font-family:monospace}
+.cron-stats{margin-top:8px;display:flex;gap:10px;flex-wrap:wrap}
+.badge{font-size:11px;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,0.06)}
+.history{margin-top:10px;padding-top:8px;border-top:1px solid #334155}
+.history span{font-size:.7rem;color:#94a3b8;display:block;margin-bottom:5px}
+.dots{display:flex;gap:3px;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%}
+.dot.ok{background:#22c55e}
+.dot.err{background:#ef4444}
+.dot.na{color:#64748b;font-size:.7rem;width:auto;height:auto;line-height:1}
+.chart-section{background:#1e293b;border-radius:12px;padding:16px;margin-bottom:16px}
+.chart-section h2{margin-bottom:8px}
+.hist-section{background:#1e293b;border-radius:12px;padding:16px;margin-bottom:16px;overflow-x:auto}
+.hist-table{width:100%;border-collapse:collapse;font-size:.78rem}
+.hist-table th{text-align:left;padding:6px 8px;color:#64748b;font-weight:500;border-bottom:1px solid #334155}
+.hist-table td{padding:6px 8px;border-bottom:1px solid #1e293b}
+.hist-table td:first-child{font-weight:600;white-space:nowrap;font-size:.78rem}
+.ok-cell{color:#22c55e}
+.err-cell{color:#ef4444}
+.na{color:#64748b;text-align:center}
+.footer{text-align:center;font-size:.7rem;color:#64748b;padding-top:12px;border-top:1px solid #1e293b;margin-top:8px}
+.creds-section{margin-bottom:16px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 </head>
 <body>
-<div class="container">
-  <h1>🔧 n8n LEO · Monitoring</h1>
-  <div class="subtitle">Mise à jour : 2026-06-20 12:01</div>
-  <div class="nav-links">
-    <a href="https://christophedanhier-hash.github.io/bavi-leo-dashboard/">🏛️ BAVI LEO</a>
-    <a href="https://christophedanhier-hash.github.io/dashboard-leo/">📊 Dashboard LEO</a>
-    <a href="https://christophedanhier-hash.github.io/leo-metrics/">💻 Machines</a>
-    <a href="https://christophedanhier-hash.github.io/crons-dashboard/">⏱️ Crons</a>
-    <a href="https://christophedanhier-hash.github.io/github-dashboard/">🐙 GitHub</a>
-    <a href="https://christophedanhier-hash.github.io/dashboard-n8n/">🔧 n8n</a>
-  </div>
+<div class="header">
+    <div><h1>🔧 n8n LEO · Monitoring</h1><small>Mise à jour : 2026-06-20 12:14</small></div>
+</div>
+<div class="nav-bar">
+  <a href="https://christophedanhier-hash.github.io/bavi-leo-dashboard/" class="nav-link">🏛️ BAVI LEO</a>
+  <a href="https://christophedanhier-hash.github.io/dashboard-leo/" class="nav-link">📊 Dashboard LEO</a>
+  <a href="https://christophedanhier-hash.github.io/leo-metrics/" class="nav-link">💻 Machines</a>
+  <a href="https://christophedanhier-hash.github.io/crons-dashboard/" class="nav-link">⏱️ Crons</a>
+  <a href="https://christophedanhier-hash.github.io/github-dashboard/" class="nav-link">🐙 GitHub</a>
+  <a href="https://christophedanhier-hash.github.io/dashboard-n8n/" class="nav-link active">🔧 n8n</a>
+</div>
+<div class="stats">
+    <div class="stat"><div class="num" style="color:#22c55e">10</div><div class="label">Workflows</div></div>
+    <div class="stat"><div class="num" style="color:#22c55e">5</div><div class="label">✅ Actifs</div></div>
+    <div class="stat"><div class="num" style="color:#f59e0b">5</div><div class="label">📊 Exécutions</div></div>
+    <div class="stat"><div class="num">5</div><div class="label">🔌 Credentials</div></div>
+</div>
 
-  <div class="stats-grid">
-    <div class="stat-card"><div class="icon">⚡</div><div class="value">9</div><div class="label">Workflows</div></div>
-    <div class="stat-card"><div class="icon">✅</div><div class="value">4</div><div class="label">Actifs</div></div>
-    <div class="stat-card"><div class="icon">📊</div><div class="value">5</div><div class="label">Exécutions</div></div>
-    <div class="stat-card"><div class="icon">🔌</div><div class="value">3</div><div class="label">Credentials</div></div>
-  </div>
-
-  <div class="chart-container">
+<div class="chart-section">
     <h2>📈 Exécutions / 7 jours</h2>
-    <canvas id="execChart" height="100"></canvas>
-  </div>
+    <canvas id="execChart" height="80"></canvas>
+</div>
 
-  <div class="grid-2col">
-    <div>
-      <h2>⚡ Workflows</h2>
-      
-<div class="cron-card active">
-  <div class="cron-status">✅</div>
-  <div class="cron-info">
-    <strong>LEO Ping</strong>
-    <div class="cron-meta">
-      📤 Dernier run 2026-06-19 20:10 ⏱️ 0.0s
+<h2>⚡ Workflows (10)</h2>
+<div class="grid">
+    <div class="card ok">
+        <div class="card-header">
+            <span class="card-icon">✅</span>
+            <div class="card-title">
+                <strong>LEO Ping</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>2026-06-19 20:10 ⏱️ 0.0s</span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 1 succès</span>
+                <span class="badge" style="color:#64748b">📊 1 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot ok"></span><span class="dot na">—</span></div>
+            </div>
+        </div>
+    </div>    <div class="card paused">
+        <div class="card-header">
+            <span class="card-icon">⏹️</span>
+            <div class="card-title">
+                <strong>GMAIL TEST</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>— </span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 0 succès</span>
+                <span class="badge" style="color:#64748b">📊 0 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span></div>
+            </div>
+        </div>
+    </div>    <div class="card paused">
+        <div class="card-header">
+            <span class="card-icon">⏹️</span>
+            <div class="card-title">
+                <strong>Gmail Classifier v2 — Minimal</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>— </span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 0 succès</span>
+                <span class="badge" style="color:#64748b">📊 0 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span></div>
+            </div>
+        </div>
+    </div>    <div class="card paused">
+        <div class="card-header">
+            <span class="card-icon">⏹️</span>
+            <div class="card-title">
+                <strong>Veille IA - n8n</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>— </span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 0 succès</span>
+                <span class="badge" style="color:#64748b">📊 0 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span></div>
+            </div>
+        </div>
+    </div>    <div class="card ok">
+        <div class="card-header">
+            <span class="card-icon">✅</span>
+            <div class="card-title">
+                <strong>Veille IA - n8n</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>— </span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 0 succès</span>
+                <span class="badge" style="color:#64748b">📊 0 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span></div>
+            </div>
+        </div>
+    </div>    <div class="card ok">
+        <div class="card-header">
+            <span class="card-icon">✅</span>
+            <div class="card-title">
+                <strong>LEO Dev Log</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>— </span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 0 succès</span>
+                <span class="badge" style="color:#64748b">📊 0 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span></div>
+            </div>
+        </div>
+    </div>    <div class="card ok">
+        <div class="card-header">
+            <span class="card-icon">✅</span>
+            <div class="card-title">
+                <strong>Gmail Classifier v3</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>2026-06-20 12:00 ⏱️ 0.0s</span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 0 succès</span>
+                <span class="badge" style="color:#ef4444">❌ 1 erreurs</span>
+                <span class="badge" style="color:#64748b">📊 1 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot err"></span></div>
+            </div>
+        </div>
+    </div>    <div class="card paused">
+        <div class="card-header">
+            <span class="card-icon">⏹️</span>
+            <div class="card-title">
+                <strong>Gmail Classifier v2</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>2026-06-20 10:30 ⏱️ 0.0s</span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 0 succès</span>
+                <span class="badge" style="color:#ef4444">❌ 3 erreurs</span>
+                <span class="badge" style="color:#64748b">📊 3 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot err"></span></div>
+            </div>
+        </div>
+    </div>    <div class="card paused">
+        <div class="card-header">
+            <span class="card-icon">⏹️</span>
+            <div class="card-title">
+                <strong>Gmail Classifier v3</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>2026-06-20 12:00 ⏱️ 0.0s</span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 0 succès</span>
+                <span class="badge" style="color:#ef4444">❌ 1 erreurs</span>
+                <span class="badge" style="color:#64748b">📊 1 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot err"></span></div>
+            </div>
+        </div>
+    </div>    <div class="card ok">
+        <div class="card-header">
+            <span class="card-icon">✅</span>
+            <div class="card-title">
+                <strong>GitHub Health Check</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>— </span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 0 succès</span>
+                <span class="badge" style="color:#64748b">📊 0 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span></div>
+            </div>
+        </div>
     </div>
-    <div class="cron-stats">
-      <span class="badge success">✅ 1 succès</span>
-      
-      <span class="badge info">📊 1 total</span>
-    </div>
-  </div>
 </div>
-<div class="cron-card inactive">
-  <div class="cron-status">⏹️</div>
-  <div class="cron-info">
-    <strong>GMAIL TEST</strong>
-    <div class="cron-meta">
-      📤 Dernier run — ⏱️ 
-    </div>
-    <div class="cron-stats">
-      <span class="badge success">✅ 0 succès</span>
-      
-      <span class="badge info">📊 0 total</span>
-    </div>
-  </div>
-</div>
-<div class="cron-card inactive">
-  <div class="cron-status">⏹️</div>
-  <div class="cron-info">
-    <strong>Gmail Classifier v2 — Minimal</strong>
-    <div class="cron-meta">
-      📤 Dernier run — ⏱️ 
-    </div>
-    <div class="cron-stats">
-      <span class="badge success">✅ 0 succès</span>
-      
-      <span class="badge info">📊 0 total</span>
-    </div>
-  </div>
-</div>
-<div class="cron-card inactive">
-  <div class="cron-status">⏹️</div>
-  <div class="cron-info">
-    <strong>Veille IA - n8n</strong>
-    <div class="cron-meta">
-      📤 Dernier run — ⏱️ 
-    </div>
-    <div class="cron-stats">
-      <span class="badge success">✅ 0 succès</span>
-      
-      <span class="badge info">📊 0 total</span>
-    </div>
-  </div>
-</div>
-<div class="cron-card active">
-  <div class="cron-status">✅</div>
-  <div class="cron-info">
-    <strong>Veille IA - n8n</strong>
-    <div class="cron-meta">
-      📤 Dernier run — ⏱️ 
-    </div>
-    <div class="cron-stats">
-      <span class="badge success">✅ 0 succès</span>
-      
-      <span class="badge info">📊 0 total</span>
-    </div>
-  </div>
-</div>
-<div class="cron-card active">
-  <div class="cron-status">✅</div>
-  <div class="cron-info">
-    <strong>LEO Dev Log</strong>
-    <div class="cron-meta">
-      📤 Dernier run — ⏱️ 
-    </div>
-    <div class="cron-stats">
-      <span class="badge success">✅ 0 succès</span>
-      
-      <span class="badge info">📊 0 total</span>
-    </div>
-  </div>
-</div>
-<div class="cron-card active">
-  <div class="cron-status">✅</div>
-  <div class="cron-info">
-    <strong>Gmail Classifier v3</strong>
-    <div class="cron-meta">
-      📤 Dernier run 2026-06-20 12:00 ⏱️ 0.0s
-    </div>
-    <div class="cron-stats">
-      <span class="badge success">✅ 0 succès</span>
-      <span class="badge error">❌ 1 erreurs</span>
-      <span class="badge info">📊 1 total</span>
-    </div>
-  </div>
-</div>
-<div class="cron-card inactive">
-  <div class="cron-status">⏹️</div>
-  <div class="cron-info">
-    <strong>Gmail Classifier v2</strong>
-    <div class="cron-meta">
-      📤 Dernier run 2026-06-20 10:30 ⏱️ 0.0s
-    </div>
-    <div class="cron-stats">
-      <span class="badge success">✅ 0 succès</span>
-      <span class="badge error">❌ 3 erreurs</span>
-      <span class="badge info">📊 3 total</span>
-    </div>
-  </div>
-</div>
-<div class="cron-card inactive">
-  <div class="cron-status">⏹️</div>
-  <div class="cron-info">
-    <strong>Gmail Classifier v3</strong>
-    <div class="cron-meta">
-      📤 Dernier run 2026-06-20 12:00 ⏱️ 0.0s
-    </div>
-    <div class="cron-stats">
-      <span class="badge success">✅ 0 succès</span>
-      <span class="badge error">❌ 1 erreurs</span>
-      <span class="badge info">📊 1 total</span>
-    </div>
-  </div>
-</div>
-      
-<div class="cron-card inactive">
-  <div class="cron-status">⏹️</div>
-  <div class="cron-info"><strong>GMAIL TEST</strong><div class="cron-meta">Inactif · Créé le 2026-06-20</div></div>
-</div>
-<div class="cron-card inactive">
-  <div class="cron-status">⏹️</div>
-  <div class="cron-info"><strong>Gmail Classifier v2 — Minimal</strong><div class="cron-meta">Inactif · Créé le 2026-06-20</div></div>
-</div>
-<div class="cron-card inactive">
-  <div class="cron-status">⏹️</div>
-  <div class="cron-info"><strong>Veille IA - n8n</strong><div class="cron-meta">Inactif · Créé le 2026-06-20</div></div>
-</div>
-<div class="cron-card inactive">
-  <div class="cron-status">⏹️</div>
-  <div class="cron-info"><strong>Gmail Classifier v2</strong><div class="cron-meta">Inactif · Créé le 2026-06-20</div></div>
-</div>
-<div class="cron-card inactive">
-  <div class="cron-status">⏹️</div>
-  <div class="cron-info"><strong>Gmail Classifier v3</strong><div class="cron-meta">Inactif · Créé le 2026-06-20</div></div>
-</div>
-    </div>
-    <div>
-      <h2>🔑 Credentials (3)</h2>
-      
-<div class="cron-card">
-  <div class="cron-status">🦙</div>
-  <div class="cron-info">
-    <strong>Ollama LEO</strong>
-    <div class="cron-meta">Type: ollamaApi · ID: L23MxlJFmeINg1Cz</div>
-  </div>
-</div>
-<div class="cron-card">
-  <div class="cron-status">🦙</div>
-  <div class="cron-info">
-    <strong>Hermes Agent - Ollama LEO</strong>
-    <div class="cron-meta">Type: ollamaApi · ID: VOmM3VrDS93897R4</div>
-  </div>
-</div>
-<div class="cron-card">
-  <div class="cron-status">🔑</div>
-  <div class="cron-info">
-    <strong>Gmail LEO</strong>
-    <div class="cron-meta">Type: googleOAuth2Api · ID: ayWDZcN46YpzB3CG</div>
-  </div>
-</div>
-<div class="cron-card">
-  <div class="cron-status">🔐</div>
-  <div class="cron-info">
-    <strong>Gmail OAuth2 Generic</strong>
-    <div class="cron-meta">Type: oAuth2Api · ID: aw266MRMsTtTTA3P</div>
-  </div>
-</div>
-<div class="cron-card">
-  <div class="cron-status">🪪</div>
-  <div class="cron-info">
-    <strong>Gmail LEO Bearer Token</strong>
-    <div class="cron-meta">Type: httpBearerAuth · ID: IYACYoqL5skamxym</div>
-  </div>
-</div>
-    </div>
-  </div>
 
-  <h2>📅 Historique / 7 jours</h2>
-  <div style="overflow-x:auto;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:15px;margin-bottom:20px;">
-    <table>
-      <thead><tr><th>Workflow</th><th>14/06</th><th>15/06</th><th>16/06</th><th>17/06</th><th>18/06</th><th>19/06</th><th>20/06</th></tr></thead>
-      <tbody><tr><td>✅ LEO Ping</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-ok">1✅</td><td class="td-na">—</td></tr>
-<tr><td>✅ Gmail Classifier v2 — Minimal</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td></tr>
-<tr><td>✅ Veille IA - n8n</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td></tr>
-<tr><td>✅ Veille IA - n8n</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td></tr>
-<tr><td>✅ LEO Dev Log</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td></tr>
-<tr><td>⚠️ Gmail Classifier v3</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-error">0✅ 1❌</td></tr>
-<tr><td>⚠️ Gmail Classifier v2</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-error">0✅ 3❌</td></tr>
-<tr><td>⚠️ Gmail Classifier v3</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-na">—</td><td class="td-error">0✅ 1❌</td></tr>
+<div class="creds-section">
+<h2>🔑 Credentials (5)</h2>
+<div class="grid">
+    <div class="card" style="border-left-color:#a78bfa">
+        <div class="card-header">
+            <span class="card-icon">🦙</span>
+            <div class="card-title">
+                <strong>Ollama LEO</strong>
+                <small>Type: ollamaApi</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>ID</span><span style="font-family:monospace;font-size:0.75rem">L23MxlJFmeINg1Cz</span>
+            </div>
+        </div>
+    </div>    <div class="card" style="border-left-color:#a78bfa">
+        <div class="card-header">
+            <span class="card-icon">🦙</span>
+            <div class="card-title">
+                <strong>Hermes Agent - Ollama LEO</strong>
+                <small>Type: ollamaApi</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>ID</span><span style="font-family:monospace;font-size:0.75rem">VOmM3VrDS93897R4</span>
+            </div>
+        </div>
+    </div>    <div class="card" style="border-left-color:#a78bfa">
+        <div class="card-header">
+            <span class="card-icon">🔑</span>
+            <div class="card-title">
+                <strong>Gmail LEO</strong>
+                <small>Type: googleOAuth2Api</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>ID</span><span style="font-family:monospace;font-size:0.75rem">ayWDZcN46YpzB3CG</span>
+            </div>
+        </div>
+    </div>    <div class="card" style="border-left-color:#a78bfa">
+        <div class="card-header">
+            <span class="card-icon">🔐</span>
+            <div class="card-title">
+                <strong>Gmail OAuth2 Generic</strong>
+                <small>Type: oAuth2Api</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>ID</span><span style="font-family:monospace;font-size:0.75rem">aw266MRMsTtTTA3P</span>
+            </div>
+        </div>
+    </div>    <div class="card" style="border-left-color:#a78bfa">
+        <div class="card-header">
+            <span class="card-icon">🪪</span>
+            <div class="card-title">
+                <strong>Gmail LEO Bearer Token</strong>
+                <small>Type: httpBearerAuth</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>ID</span><span style="font-family:monospace;font-size:0.75rem">IYACYoqL5skamxym</span>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="hist-section">
+    <h2>📅 Historique / 7 jours</h2>
+    <table class="hist-table">
+        <thead><tr><th>Workflow</th><th>14/06</th><th>15/06</th><th>16/06</th><th>17/06</th><th>18/06</th><th>19/06</th><th>20/06</th></tr></thead>
+        <tbody><tr><td>✅ LEO Ping</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="ok-cell">1✅</td><td class="na">—</td></tr>
+<tr><td>✅ GMAIL TEST</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>
+<tr><td>✅ Gmail Classifier v2 — Minimal</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>
+<tr><td>✅ Veille IA - n8n</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>
+<tr><td>✅ Veille IA - n8n</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>
+<tr><td>✅ LEO Dev Log</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>
+<tr><td>⚠️ Gmail Classifier v3</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="err-cell">0✅ 1❌</td></tr>
+<tr><td>⚠️ Gmail Classifier v2</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="err-cell">0✅ 3❌</td></tr>
+<tr><td>⚠️ Gmail Classifier v3</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="err-cell">0✅ 1❌</td></tr>
+<tr><td>✅ GitHub Health Check</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>
 </tbody>
     </table>
-  </div>
-
-  <div class="footer">
-    LEO · 2026-06-20 12:01 · Données toutes les 15 min · Zéro JavaScript (hors Chart.js)
-  </div>
 </div>
+
+<div class="footer">LEO · 2026-06-20 12:14 · Données toutes les 15 min</div>
 
 <script>
 new Chart(document.getElementById('execChart'), {
@@ -292,25 +396,25 @@ new Chart(document.getElementById('execChart'), {
       {
         label: '✅ Succès',
         data: [0, 0, 0, 0, 0, 1, 0],
-        backgroundColor: 'rgba(63,185,80,0.6)',
-        borderColor: '#3fb950',
+        backgroundColor: 'rgba(34,197,94,0.5)',
+        borderColor: '#22c55e',
         borderWidth: 1
       },
       {
         label: '❌ Erreurs',
         data: [0, 0, 0, 0, 0, 0, 4],
-        backgroundColor: 'rgba(248,81,73,0.6)',
-        borderColor: '#f85149',
+        backgroundColor: 'rgba(239,68,68,0.5)',
+        borderColor: '#ef4444',
         borderWidth: 1
       }
     ]
   },
   options: {
     responsive: true,
-    plugins: { legend: { labels: { color: '#c9d1d9' } } },
+    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } },
     scales: {
-      x: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } },
-      y: { beginAtZero: true, ticks: { color: '#8b949e', stepSize: 1 }, grid: { color: '#21262d' } }
+      x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#334155' } },
+      y: { beginAtZero: true, ticks: { color: '#64748b', font: { size: 10 }, stepSize: 1 }, grid: { color: '#334155' } }
     }
   }
 });
