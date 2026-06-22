@@ -55,7 +55,7 @@ h2{font-size:1rem;color:#94a3b8;margin-bottom:12px;font-weight:500}
 </head>
 <body>
 <div class="header">
-    <div><h1>🔧 n8n LEO · Monitoring</h1><small>Mise à jour : 2026-06-22 07:46</small></div>
+    <div><h1>🔧 n8n LEO · Monitoring</h1><small>Mise à jour : 2026-06-22 08:01</small></div>
 </div>
 <div class="nav-bar">
   <a href="https://christophedanhier-hash.github.io/leo-global-dashboard/" class="nav-link">🌍 Global</a>
@@ -67,9 +67,9 @@ h2{font-size:1rem;color:#94a3b8;margin-bottom:12px;font-weight:500}
   <a href="https://christophedanhier-hash.github.io/dashboard-n8n/" class="nav-link active">🔧 n8n</a>
 </div>
 <div class="stats">
-    <div class="stat"><div class="num" style="color:#22c55e">7</div><div class="label">Workflows</div></div>
-    <div class="stat"><div class="num" style="color:#22c55e">5</div><div class="label">✅ Actifs</div></div>
-    <div class="stat"><div class="num" style="color:#f59e0b">7</div><div class="label">📊 Exécutions</div></div>
+    <div class="stat"><div class="num" style="color:#22c55e">11</div><div class="label">Workflows</div></div>
+    <div class="stat"><div class="num" style="color:#22c55e">6</div><div class="label">✅ Actifs</div></div>
+    <div class="stat"><div class="num" style="color:#f59e0b">8</div><div class="label">📊 Exécutions</div></div>
     <div class="stat"><div class="num">4</div><div class="label">🔌 Credentials</div></div>
 </div>
 
@@ -78,7 +78,7 @@ h2{font-size:1rem;color:#94a3b8;margin-bottom:12px;font-weight:500}
     <canvas id="execChart" height="80"></canvas>
 </div>
 
-<h2>⚡ Workflows (7)</h2>
+<h2>⚡ Workflows (11)</h2>
 <div class="grid">
     <div class="card ok">
         <div class="card-header">
@@ -136,17 +136,17 @@ h2{font-size:1rem;color:#94a3b8;margin-bottom:12px;font-weight:500}
             </div>
             <div class="cron-stats">
                 <span class="badge" style="color:#22c55e">✅ 0 succès</span>
-                <span class="badge" style="color:#ef4444">❌ 2 erreurs</span>
-                <span class="badge" style="color:#64748b">📊 2 total</span>
+                <span class="badge" style="color:#ef4444">❌ 3 erreurs</span>
+                <span class="badge" style="color:#64748b">📊 3 total</span>
             </div>
             <div class="history">
                 <span>📜 Historique (7 jours)</span>
                 <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot err"></span></div>
             </div>
         </div>
-    </div>    <div class="card ok">
+    </div>    <div class="card paused">
         <div class="card-header">
-            <span class="card-icon">✅</span>
+            <span class="card-icon">⏹️</span>
             <div class="card-title">
                 <strong>🛡️ Dashboard Watch v2 (avec retry + notifications)</strong>
                 <small>🔧 n8n workflow</small>
@@ -188,9 +188,31 @@ h2{font-size:1rem;color:#94a3b8;margin-bottom:12px;font-weight:500}
                 <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot err"></span></div>
             </div>
         </div>
-    </div>    <div class="card ok">
+    </div>    <div class="card paused">
         <div class="card-header">
-            <span class="card-icon">✅</span>
+            <span class="card-icon">⏹️</span>
+            <div class="card-title">
+                <strong>🛡️ Dashboard Watch v6 (pairedItem fix)</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>2026-06-22 07:32 ⏱️ 0.2s</span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 0 succès</span>
+                <span class="badge" style="color:#ef4444">❌ 1 erreurs</span>
+                <span class="badge" style="color:#64748b">📊 1 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot err"></span></div>
+            </div>
+        </div>
+    </div>    <div class="card paused">
+        <div class="card-header">
+            <span class="card-icon">⏹️</span>
             <div class="card-title">
                 <strong>🛡️ Dashboard Watch v6 (pairedItem fix)</strong>
                 <small>🔧 n8n workflow</small>
@@ -214,22 +236,84 @@ h2{font-size:1rem;color:#94a3b8;margin-bottom:12px;font-weight:500}
         <div class="card-header">
             <span class="card-icon">✅</span>
             <div class="card-title">
-                <strong>🛡️ Dashboard Watch v6 (pairedItem fix)</strong>
+                <strong>Parallel Dashboards Monitor</strong>
                 <small>🔧 n8n workflow</small>
             </div>
         </div>
         <div class="card-body">
             <div class="info">
-                <span>📤 Dernier run</span><span>2026-06-22 07:32 ⏱️ 0.2s</span>
+                <span>📤 Dernier run</span><span>— </span>
             </div>
             <div class="cron-stats">
                 <span class="badge" style="color:#22c55e">✅ 0 succès</span>
-                <span class="badge" style="color:#ef4444">❌ 1 erreurs</span>
-                <span class="badge" style="color:#64748b">📊 1 total</span>
+                <span class="badge" style="color:#64748b">📊 0 total</span>
             </div>
             <div class="history">
                 <span>📜 Historique (7 jours)</span>
-                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot err"></span></div>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span></div>
+            </div>
+        </div>
+    </div>    <div class="card ok">
+        <div class="card-header">
+            <span class="card-icon">✅</span>
+            <div class="card-title">
+                <strong>Parallel Dashboards Monitor</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>— </span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 0 succès</span>
+                <span class="badge" style="color:#64748b">📊 0 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span></div>
+            </div>
+        </div>
+    </div>    <div class="card ok">
+        <div class="card-header">
+            <span class="card-icon">✅</span>
+            <div class="card-title">
+                <strong>Parallel Dashboards Monitor</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>— </span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 0 succès</span>
+                <span class="badge" style="color:#64748b">📊 0 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span></div>
+            </div>
+        </div>
+    </div>    <div class="card ok">
+        <div class="card-header">
+            <span class="card-icon">✅</span>
+            <div class="card-title">
+                <strong>Parallel Dashboards Monitor</strong>
+                <small>🔧 n8n workflow</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="info">
+                <span>📤 Dernier run</span><span>— </span>
+            </div>
+            <div class="cron-stats">
+                <span class="badge" style="color:#22c55e">✅ 0 succès</span>
+                <span class="badge" style="color:#64748b">📊 0 total</span>
+            </div>
+            <div class="history">
+                <span>📜 Historique (7 jours)</span>
+                <div class="dots"><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span><span class="dot na">—</span></div>
             </div>
         </div>
     </div>
@@ -300,16 +384,20 @@ h2{font-size:1rem;color:#94a3b8;margin-bottom:12px;font-weight:500}
         <thead><tr><th>Workflow</th><th>16/06</th><th>17/06</th><th>18/06</th><th>19/06</th><th>20/06</th><th>21/06</th><th>22/06</th></tr></thead>
         <tbody><tr><td>✅ LEO Ping</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>
 <tr><td>✅ Dashboard Watch</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>
-<tr><td>⚠️ 💰 Budget Check (via Hermes Webhook)</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="err-cell">0✅ 2❌</td></tr>
+<tr><td>⚠️ 💰 Budget Check (via Hermes Webhook)</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="err-cell">0✅ 3❌</td></tr>
 <tr><td>⚠️ 🛡️ Dashboard Watch v2 (avec retry + notifications)</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="err-cell">0✅ 4❌</td></tr>
 <tr><td>⚠️ 🛡️ Dashboard Watch v6 (pairedItem fix)</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="err-cell">0✅ 1❌</td></tr>
 <tr><td>⚠️ 🛡️ Dashboard Watch v6 (pairedItem fix)</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="err-cell">0✅ 1❌</td></tr>
 <tr><td>⚠️ 🛡️ Dashboard Watch v6 (pairedItem fix)</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="err-cell">0✅ 1❌</td></tr>
+<tr><td>✅ Parallel Dashboards Monitor</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>
+<tr><td>✅ Parallel Dashboards Monitor</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>
+<tr><td>✅ Parallel Dashboards Monitor</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>
+<tr><td>✅ Parallel Dashboards Monitor</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td></tr>
 </tbody>
     </table>
 </div>
 
-<div class="footer">LEO · 2026-06-22 07:46 · Données toutes les 15 min</div>
+<div class="footer">LEO · 2026-06-22 08:01 · Données toutes les 15 min</div>
 
 <script>
 new Chart(document.getElementById('execChart'), {
@@ -326,7 +414,7 @@ new Chart(document.getElementById('execChart'), {
       },
       {
         label: '❌ Erreurs',
-        data: [0, 0, 0, 0, 0, 0, 7],
+        data: [0, 0, 0, 0, 0, 0, 8],
         backgroundColor: 'rgba(239,68,68,0.5)',
         borderColor: '#ef4444',
         borderWidth: 1
